@@ -138,6 +138,6 @@ jobs:
       - name: Build windows
         shell: cmd
         run: |
-          cd $GITHUB_WORKSPACE\MYTEST
+          cd %GITHUB_WORKSPACE%/MYTEST
           set BAZEL_VC=C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC
           bazelisk build //:hello-world --local_ram_resources=5120 --action_env PYTHON_BIN_PATH="C:/hostedtoolcache/windows/Python/3.8.10/x64/python.exe" --remote_cache=${{ env.BAZEL_CACHE_URL }}/${{ runner.os }}-${{ runner.arch }}-python${{ matrix.python-version }} --google_default_credentials
