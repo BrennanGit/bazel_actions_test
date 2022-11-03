@@ -99,8 +99,8 @@ jobs:
             -e GOOGLE_APPLICATION_CREDENTIALS=/tmp/gcloud-credentials.json \
             -v $GOOGLE_APPLICATION_CREDENTIALS:/tmp/gcloud-credentials.json:ro \
             -v ${PWD}:/ai_tools -w /ai_tools \
-            ubuntu:20.04 \
-            bazel build //:xcore-opt --linkopt=-lrt --crosstool_top=@ubuntu20.04-gcc9_manylinux2014-cuda11.2-cudnn8.1-tensorrt7.2_config_cuda//crosstool:toolchain
+            l.gcr.io/google/bazel \
+            build //:hello-world
 
   windows-release-wheel:
     name: Build for windows
