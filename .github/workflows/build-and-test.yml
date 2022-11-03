@@ -64,7 +64,7 @@ jobs:
           cd $GITHUB_WORKSPACE/MYTEST
           if [[ -n $GOOGLE_APPLICATION_CREDENTIALS ]]; then
             echo "using Google Cloud Storage cache"
-            echo -e 'build --remote_cache=${{ env.BAZEL_CACHE_URL }}/${{ runner.os }}-${{ runner.arch }}-python${{ matrix.python-version }}' >> .bazelrc.user
+            echo -e 'build --remote_cache=${{ env.BAZEL_CACHE_URL }}/${{ runner.os }}-arm64-python${{ matrix.python-version }}' >> .bazelrc.user
             echo -e 'build --google_default_credentials' >> .bazelrc.user
           fi
           bazelisk build //:hello-world --cpu=darwin_arm64 --copt=-fvisibility=hidden --copt=-mmacosx-version-min=11.0 --linkopt=-mmacosx-version-min=11.0 --linkopt=-dead_strip  
