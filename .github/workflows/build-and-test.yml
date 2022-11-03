@@ -95,12 +95,12 @@ jobs:
             echo -e 'build --google_default_credentials' >> .bazelrc.user
           fi
 
-          docker run -e SETUPTOOLS_SCM_PRETEND_VERSION=${{ env.PRETEND_VERSION }} \
+          docker run \
             -e GOOGLE_APPLICATION_CREDENTIALS=/tmp/gcloud-credentials.json \
             -v $GOOGLE_APPLICATION_CREDENTIALS:/tmp/gcloud-credentials.json:ro \
             -v ${PWD}:/ai_tools -w /ai_tools \
-            tensorflow/build:2.10-python${{ matrix.python-version }} \
-            .github/scripts/build_linux_wheel.sh
+            ubuntu:20.04 \
+            bazel build //:xcore-opt --linkopt=-lrt --crosstool_top=@ubuntu20.04-gcc9_manylinux2014-cuda11.2-cudnn8.1-tensorrt7.2_config_cuda//crosstool:toolchain
 
   windows-release-wheel:
     name: Build for windows
