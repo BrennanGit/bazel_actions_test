@@ -30,6 +30,7 @@ jobs:
       - name: Build macOS
         shell: bash
         run: |
+          cd $GITHUB_WORKSPACE/MYTEST
           if [[ -n $GOOGLE_APPLICATION_CREDENTIALS ]]; then
             echo "using Google Cloud Storage cache"
             echo -e 'build --remote_cache=${{ env.BAZEL_CACHE_URL }}/${{ runner.os }}-${{ runner.arch }}-python${{ matrix.python-version }}' >> .bazelrc.user
@@ -60,6 +61,7 @@ jobs:
       - name: Build macOS arm
         shell: bash
         run: |
+          cd $GITHUB_WORKSPACE/MYTEST
           if [[ -n $GOOGLE_APPLICATION_CREDENTIALS ]]; then
             echo "using Google Cloud Storage cache"
             echo -e 'build --remote_cache=${{ env.BAZEL_CACHE_URL }}/${{ runner.os }}-${{ runner.arch }}-python${{ matrix.python-version }}' >> .bazelrc.user
@@ -89,16 +91,18 @@ jobs:
           credentials_json: ${{ secrets.BAZEL_REMOTE_CACHE_JSON_KEY }}
       - name: Build manylinux2014
         run: |
+          pushd $GITHUB_WORKSPACE/MYTEST
           if [[ -n $GOOGLE_APPLICATION_CREDENTIALS ]]; then
             echo "using Google Cloud Storage cache"
             echo -e 'build --remote_cache=${{ env.BAZEL_CACHE_URL }}/${{ runner.os }}-${{ runner.arch }}-python${{ matrix.python-version }}' >> .bazelrc.user
             echo -e 'build --google_default_credentials' >> .bazelrc.user
           fi
+          popd
 
           docker run \
             -e GOOGLE_APPLICATION_CREDENTIALS=/tmp/gcloud-credentials.json \
             -v $GOOGLE_APPLICATION_CREDENTIALS:/tmp/gcloud-credentials.json:ro \
-            -v ${PWD}:/ai_tools -w /ai_tools \
+            -v ${PWD}:/ai_tools -w /ai_tools/MYTEST \
             l.gcr.io/google/bazel \
             build //:hello-world
 
@@ -134,5 +138,6 @@ jobs:
       - name: Build windows
         shell: cmd
         run: |
+          cd $GITHUB_WORKSPACE\MYTEST
           set BAZEL_VC=C:\Program Files (x86)\Microsoft Visual Studio\2019\Enterprise\VC
           bazelisk build //:hello-world --local_ram_resources=5120 --action_env PYTHON_BIN_PATH="C:/hostedtoolcache/windows/Python/3.8.10/x64/python.exe" --remote_cache=${{ env.BAZEL_CACHE_URL }}/${{ runner.os }}-${{ runner.arch }}-python${{ matrix.python-version }} --google_default_credentials
