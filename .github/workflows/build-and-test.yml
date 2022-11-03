@@ -1,4 +1,4 @@
-name: xmos-ai-tools-build-and-test
+name: bazel-hw-build-and-test
 
 on:
   workflow_dispatch: {}
